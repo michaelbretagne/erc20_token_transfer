@@ -18,9 +18,13 @@
   border-radius: 5px;
 }
 
-:local(.action) {
+/* Sending modal */
+
+:local(.sendingForm) {
   margin: 20px 0 40px 0;
 }
+
+/* Reusable */
 
 :local(.rightAlign) {
   text-align: right;
@@ -29,3 +33,39 @@
 :local(.leftAlign) {
   text-align: left;
 }
+
+.ui[class*="vertically divided"].grid > .row {
+  padding-bottom: 0px;
+}
+
+/* Balance component */
+
+:local(.balanceComponent) {
+  margin: 50px 0;
+}
+
+:local(.balance) {
+  font-size: 12px;
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+:local(.balanceValue) {
+  font-size: 30px;
+  font-weight: 200;
+}
+
+:local(.actions) {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 10px 10px 0;
+  text-align: right;
+}
+
+:local(.sendButton),
+:local(.receiveButton) {
+  display: inline;
+  text-align: right;
+  padding: 0 0 0 10px;
+}
+/* ---------------------- */
