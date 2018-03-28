@@ -1,7 +1,7 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const Web3 = require("web3");
 const compiledContract = require("./build/BreizhCoin.json");
-import { mnemonic, infuraUrl } from "../../api_keys/keys";
+const { mnemonic, infuraUrl } = require("../api_keys/keys");
 
 const provider = new HDWalletProvider(mnemonic, infuraUrl);
 
@@ -13,9 +13,9 @@ const deploy = async () => {
   console.log("Attempting to deploy from account", accounts[0]);
 
   const result = await new web3.eth.Contract(
-    JSON.parse(compiledFactory.interface)
+    JSON.parse(compiledContract.interface)
   )
-    .deploy({ data: compiledContract.bytecode })
+    .deploy({ data: compiledContract.bytecode, arguments: [1000000] })
     .send({ gas: 1000000, from: accounts[0] });
 
   console.log("Contract deployed to", result.options.address);
