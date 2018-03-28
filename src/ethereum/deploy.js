@@ -1,11 +1,9 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const Web3 = require("web3");
 const compiledContract = require("./build/BreizhCoin.json");
+import { mnemonic, infuraUrl } from "../../api_keys/keys";
 
-const provider = new HDWalletProvider(
-  "comic talent heart bamboo chalk define ancient jewel wire dry strategy effort",
-  "https://rinkeby.infura.io/04TZagwwylYxLoXeoY6u"
-);
+const provider = new HDWalletProvider(mnemonic, infuraUrl);
 
 const web3 = new Web3(provider);
 

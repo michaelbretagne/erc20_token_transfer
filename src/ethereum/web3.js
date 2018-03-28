@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import { infuraUrl } from "../api_keys/keys";
 
 let web3;
 
@@ -7,9 +8,7 @@ if (typeof window !== "undefined" && typeof window.web3 !== "undefined") {
   web3 = new Web3(window.web3.currentProvider);
 } else {
   // We are on the server or the user is not running metamask
-  const provider = new Web3.providers.HttpProvider(
-    "https://rinkeby.infura.io/04TZagwwylYxLoXeoY6u"
-  );
+  const provider = new Web3.providers.HttpProvider(infuraUrl);
   web3 = new Web3(provider);
 }
 
