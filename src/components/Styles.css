@@ -1,22 +1,7 @@
 :local(.container) {
-  width: 100%;
-  height: 320px;
-  margin: 20px auto 0 auto;
-  padding: 10px 40px;
-  background-color: rgb(241, 241, 241);
-  border: 1px solid #000;
-  border-radius: 5px;
+  padding: 50px 1rem;
 }
-
-:local(.containers) {
-  width: 90%;
-  height: 320px;
-  margin: 20px auto 10px auto;
-  padding: 10px 40px;
-  background-color: rgb(241, 241, 241);
-  border: 1px solid #000;
-  border-radius: 5px;
-}
+/* 
 
 /* Sending modal */
 
@@ -32,6 +17,18 @@
 
 :local(.leftAlign) {
   text-align: left;
+}
+
+:local(.paddingBottom) {
+  padding-bottom: 1rem;
+}
+
+.ui.grid > .row {
+  padding-bottom: 0px;
+}
+
+.ui.grid > .row > .column {
+  padding: 0;
 }
 
 .ui[class*="vertically divided"].grid > .row {
@@ -69,3 +66,20 @@
   padding: 0 0 0 10px;
 }
 /* ---------------------- */
+
+/* Transaction component */
+:local(.transactionList) {
+  list-style: none;
+  margin: 6px 0;
+}
+
+:local(.transactionListTime) {
+  list-style: none;
+  margin: 6px 0;
+  color: #727272;
+}
+
+:local(.operationRow) {
+  padding: 5px 0;
+  border-bottom: 1px solid #e2e0e0;
+}
