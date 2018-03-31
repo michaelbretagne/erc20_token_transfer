@@ -1,15 +1,25 @@
 :local(.container) {
-  padding: 50px 1rem;
+  /* width: 95%; */
+  padding: 40px 0;
+  /* margin: 0 auto; */
 }
-/* 
 
 /* Sending modal */
 
 :local(.sendingForm) {
-  margin: 20px 0 40px 0;
+  width: 90%;
+  margin: 0 auto;
+}
+
+:local(.sendingTitle) {
+  padding: 40px 0px;
 }
 
 /* Reusable */
+
+:local(.center) {
+  text-align: center;
+}
 
 :local(.rightAlign) {
   text-align: right;
@@ -21,6 +31,23 @@
 
 :local(.paddingBottom) {
   padding-bottom: 1rem;
+}
+
+.ui[class*="vertically divided"].grid > .row:before {
+  width: 100%;
+  margin: 0;
+}
+
+.ui[class*="vertically divided"].grid > .row > .column {
+  margin-top: 2rem;
+}
+
+.ui.input input {
+  text-align: right;
+}
+
+.ui.grid {
+  margin: 0;
 }
 
 .ui.grid > .row {
@@ -38,11 +65,15 @@
 /* Balance component */
 
 :local(.balanceComponent) {
-  margin: 50px 0;
+  margin: 50px 0 40px 0;
+}
+
+:local(.accountTitle) {
+  padding: 10px 0 30px 0;
 }
 
 :local(.balance) {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   padding-bottom: 15px;
 }
@@ -68,6 +99,11 @@
 /* ---------------------- */
 
 /* Transaction component */
+:local(.transactionTitles) {
+  font-size: 13px;
+  font-weight: bold;
+}
+
 :local(.transactionList) {
   list-style: none;
   margin: 6px 0;
