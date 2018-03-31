@@ -41,6 +41,7 @@ class Header extends Component {
         <Modal
           open={this.state.modalOpenSend}
           onClose={this.handleClose}
+          size="small"
           closeIcon
         >
           <Modal.Content>
@@ -50,6 +51,7 @@ class Header extends Component {
         <Modal
           open={this.state.modalOpenReceive}
           onClose={this.handleClose}
+          size="small"
           closeIcon
         >
           <Modal.Content>
