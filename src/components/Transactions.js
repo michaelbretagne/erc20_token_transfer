@@ -31,7 +31,7 @@ class Transactions extends Component {
     const contractData = await contractLog.json();
 
     // Iterate through transactions data
-    for (let result of contractData.result) {
+    for (let result of contractData.result.reverse()) {
       // Check for the token address
       if (result.address === contractAddress) {
         // Topic 1 = sender, Topic 2 = receiver
@@ -92,15 +92,15 @@ class Transactions extends Component {
 
           <Grid.Row>
             <Grid.Column width={4} className={styles.leftAlign}>
-              <h5>DATE AND TIME</h5>
+              <div className={styles.transactionTitles}>DATE AND TIME</div>
             </Grid.Column>
 
             <Grid.Column width={8} className={styles.leftAlign}>
-              <h5>TRANSACTION HASH</h5>
+              <div className={styles.transactionTitles}>TRANSACTION HASH</div>
             </Grid.Column>
 
             <Grid.Column width={4} className={styles.rightAlign}>
-              <h5>AMOUNT</h5>
+              <div className={styles.transactionTitles}>AMOUNT</div>
             </Grid.Column>
           </Grid.Row>
 
@@ -118,7 +118,13 @@ class Transactions extends Component {
                 <Grid.Column width={8} className={styles.leftAlign}>
                   <div className={styles.operationRow} key={index}>
                     <li className={styles.transactionList}>
-                      <a href={data.link}>{data.txHash}</a>
+                      <a
+                        href={data.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {data.txHash}
+                      </a>
                     </li>
                   </div>
                 </Grid.Column>
