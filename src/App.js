@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Container, Grid, Message } from "semantic-ui-react";
+import { Container, Message } from "semantic-ui-react";
+import ContractToken from "./ethereum/factory";
 import BalanceOf from "./components/Balance";
-import Sending from "./components/Sending";
-import Receiving from "./components/Receiving";
 import Transactions from "./components/Transactions";
 import Header from "./components/Header";
 import web3 from "./ethereum/web3";
@@ -12,7 +11,9 @@ class App extends Component {
   state = {
     metaMaskFound: true,
     messageError1: "",
-    messageError2: ""
+    messageError2: "",
+    balance: "",
+    usd: ""
   };
 
   async componentWillMount() {
@@ -24,27 +25,36 @@ class App extends Component {
         metaMaskFound: false
       });
     }
+    const balance = await ContractToken.methods.balanceOf(accounts[0]).call();
+    const formatedBalance = (balance / 100).toFixed(2);
+    const usd = Math.round(formatedBalance / 10000000).toFixed(2);
+    this.setState({ balance: formatedBalance, usd });
   }
 
   render() {
     return (
       <div className="App">
         <Container>
-          <Header />
+          <Header balance={this.state.balance} />
           <div style={{ marginTop: 20 }}>
             {!this.state.metaMaskFound && (
               <Message error>
                 <p>
                   {this.state.messageError1}{" "}
-                  <a href="https://metamask.io/">MetaMask</a>{" "}
+                  <a
+                    href="https://metamask.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    MetaMask
+                  </a>{" "}
                   {this.state.messageError2}
                 </p>
               </Message>
             )}
           </div>
-          <BalanceOf />
+          <BalanceOf balance={this.state.balance} usd={this.state.usd} />
           <Transactions />
-          <Sending />
         </Container>
       </div>
     );
