@@ -1,7 +1,7 @@
 :local(.container) {
-  /* width: 95%; */
+  position: relative;
+  height: 100%;
   padding: 40px 0;
-  /* margin: 0 auto; */
 }
 
 /* Sending modal */
@@ -118,4 +118,16 @@
 :local(.operationRow) {
   padding: 5px 0;
   border-bottom: 1px solid #e2e0e0;
+}
+
+/* Footer */
+
+:local(.footer) {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 1127px;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }

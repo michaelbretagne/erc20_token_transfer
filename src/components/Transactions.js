@@ -3,6 +3,7 @@ import { Grid } from "semantic-ui-react";
 import web3 from "../ethereum/web3";
 import styles from "./Styles.css";
 import { etherscanApiKey } from "../api_keys/keys";
+import factory from "../ethereum/factory";
 var moment = require("moment");
 
 class Transactions extends Component {
@@ -14,8 +15,8 @@ class Transactions extends Component {
     // User accounts
     const accounts = await web3.eth.getAccounts();
     // Token contract address
-    const contractAddress = "0x405be360e813b293b1b162ab10aba9b2813917d6";
-    // Keccak256 hash of the signature of the event.
+    const contractAddress = factory._address;
+    // Keccak256 hash of the signature of the event. Can be found on Etherscan as topics[0] on any transactions event logs
     const topic =
       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
     const urlEventLog = await `https://api-rinkeby.etherscan.io/api?module=logs&action=getLogs&fromBlock=2013369&toBlock=latest&address=${contractAddress}&topic0=${topic}&apikey=${etherscanApiKey}`;
@@ -33,7 +34,7 @@ class Transactions extends Component {
     // Iterate through transactions data
     for (let result of contractData.result.reverse()) {
       // Check for the token address
-      if (result.address === contractAddress) {
+      if (result.address.toLowerCase() === contractAddress.toLowerCase()) {
         // Topic 1 = sender, Topic 2 = receiver
         const from = result.topics[1].replace("000000000000000000000000", "");
         const to = result.topics[2].replace("000000000000000000000000", "");
@@ -42,8 +43,8 @@ class Transactions extends Component {
 
         // Check if the user sent or received trnascations
         if (
-          parseInt(accounts[0], 16) === parseInt(to, 16) ||
-          parseInt(accounts[0], 16) === parseInt(from, 16)
+          accounts[0].toLowerCase() === to.toLowerCase() ||
+          accounts[0].toLowerCase() === from.toLowerCase()
         ) {
           // Assign data variables
           const hexString = result.data;
@@ -53,7 +54,7 @@ class Transactions extends Component {
           let value = parseInt(hexString, 16) / 100;
 
           // Check if user sent or received the transaction then assign operator and style (color)
-          if (parseInt(accounts[0], 16) === parseInt(from, 16)) {
+          if (accounts[0].toLowerCase() === from.toLowerCase()) {
             value = { amount: "-" + value.toFixed(2), color: "red" };
           } else {
             value = { amount: "+" + value.toFixed(2), color: "green" };
