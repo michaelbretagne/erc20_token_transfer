@@ -21,7 +21,7 @@ class Sending extends Component {
     try {
       const accounts = await web3.eth.getAccounts();
       await ContractToken.methods
-        .transfer(this.state.recipient, this.state.amount * 100)
+        .transfer(this.state.recipient, this.state.amount)
         .send({
           from: accounts[0]
         });

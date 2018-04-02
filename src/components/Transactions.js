@@ -24,56 +24,58 @@ class Transactions extends Component {
     // Fetch event log to retrieve transactions data of the contract
     const contractLog = await fetch(urlEventLog);
 
-    // Check status of API call
-    if (contractLog.status >= 400) {
-      throw new Error("Bad response from server");
-    }
-    // JSON format of the data
-    const contractData = await contractLog.json();
+    if (accounts[0]) {
+      // Check status of API call
+      if (contractLog.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      // JSON format of the data
+      const contractData = await contractLog.json();
 
-    // Iterate through transactions data
-    for (let result of contractData.result.reverse()) {
-      // Check for the token address
-      if (result.address.toLowerCase() === contractAddress.toLowerCase()) {
-        // Topic 1 = sender, Topic 2 = receiver
-        const from = result.topics[1].replace("000000000000000000000000", "");
-        const to = result.topics[2].replace("000000000000000000000000", "");
-        // Get hash of each transaction
-        const hash = result.transactionHash;
+      // Iterate through transactions data
+      for (let result of contractData.result.reverse()) {
+        // Check for the token address
+        if (result.address.toLowerCase() === contractAddress.toLowerCase()) {
+          // Topic 1 = sender, Topic 2 = receiver
+          const from = result.topics[1].replace("000000000000000000000000", "");
+          const to = result.topics[2].replace("000000000000000000000000", "");
+          // Get hash of each transaction
+          const hash = result.transactionHash;
 
-        // Check if the user sent or received trnascations
-        if (
-          accounts[0].toLowerCase() === to.toLowerCase() ||
-          accounts[0].toLowerCase() === from.toLowerCase()
-        ) {
-          // Assign data variables
-          const hexString = result.data;
-          const hashUrl = `https://rinkeby.etherscan.io/tx/${hash}`;
-          const timeStamp = new Date(result.timeStamp * 1000);
-          const formatedTime = moment(timeStamp).format("MM-DD-YYYY HH:mm");
-          let value = parseInt(hexString, 16) / 100;
+          // Check if the user sent or received trnascations
+          if (
+            accounts[0].toLowerCase() === to.toLowerCase() ||
+            accounts[0].toLowerCase() === from.toLowerCase()
+          ) {
+            // Assign data variables
+            const hexString = result.data;
+            const hashUrl = `https://rinkeby.etherscan.io/tx/${hash}`;
+            const timeStamp = new Date(result.timeStamp * 1000);
+            const formatedTime = moment(timeStamp).format("MM-DD-YYYY HH:mm");
+            let value = parseInt(hexString, 16) / 100;
 
-          // Check if user sent or received the transaction then assign operator and style (color)
-          if (accounts[0].toLowerCase() === from.toLowerCase()) {
-            value = { amount: "-" + value.toFixed(2), color: "red" };
-          } else {
-            value = { amount: "+" + value.toFixed(2), color: "green" };
+            // Check if user sent or received the transaction then assign operator and style (color)
+            if (accounts[0].toLowerCase() === from.toLowerCase()) {
+              value = { amount: "-" + value.toFixed(2), color: "red" };
+            } else {
+              value = { amount: "+" + value.toFixed(2), color: "green" };
+            }
+
+            // Set state
+            this.setState({
+              data: [
+                ...this.state.data,
+                {
+                  txHash: hash,
+                  link: hashUrl,
+                  time: formatedTime,
+                  value,
+                  from,
+                  to
+                }
+              ]
+            });
           }
-
-          // Set state
-          this.setState({
-            data: [
-              ...this.state.data,
-              {
-                txHash: hash,
-                link: hashUrl,
-                time: formatedTime,
-                value,
-                from,
-                to
-              }
-            ]
-          });
         }
       }
     }
