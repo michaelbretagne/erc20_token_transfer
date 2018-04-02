@@ -5,6 +5,7 @@ import ContractToken from "./ethereum/factory";
 import BalanceOf from "./components/Balance";
 import Transactions from "./components/Transactions";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import web3 from "./ethereum/web3";
 
 class App extends Component {
@@ -12,6 +13,7 @@ class App extends Component {
     metaMaskFound: true,
     messageError1: "",
     messageError2: "",
+    account: "",
     balance: "",
     usd: ""
   };
@@ -26,16 +28,16 @@ class App extends Component {
       });
     }
     const balance = await ContractToken.methods.balanceOf(accounts[0]).call();
-    const formatedBalance = (balance / 100).toFixed(2);
+    const formatedBalance = (balance / 1).toFixed(2);
     const usd = Math.round(formatedBalance / 10000000).toFixed(2);
-    this.setState({ balance: formatedBalance, usd });
+    this.setState({ account: accounts[0], balance: formatedBalance, usd });
   }
 
   render() {
     return (
       <div className="App">
         <Container>
-          <Header balance={this.state.balance} />
+          <Header balance={this.state.balance} account={this.state.account} />
           <div style={{ marginTop: 20 }}>
             {!this.state.metaMaskFound && (
               <Message error>
@@ -55,6 +57,7 @@ class App extends Component {
           </div>
           <BalanceOf balance={this.state.balance} usd={this.state.usd} />
           <Transactions />
+          <Footer />
         </Container>
       </div>
     );
