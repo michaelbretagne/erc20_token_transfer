@@ -36,13 +36,14 @@ class Sending extends Component {
       this.setState({ errorMessage: "Oops! " + err.message.split("\n")[0] });
     }
   };
+
   render() {
     return (
       <div className={styles.container}>
         <Form
           onSubmit={this.onSubmit}
-          error={this.state.errorMessage}
-          success={this.state.successMessage}
+          error={!!this.state.errorMessage}
+          success={!!this.state.successMessage}
         >
           <div className={styles.sendingForm}>
             <div className={styles.sendingTitle}>
