@@ -2,13 +2,15 @@ pragma solidity ^0.4.21;
 
 contract BreizhCoin {
 
-    string public constant name = "BREIZH COIN";
-    string public constant symbol = "BZH";
+    bytes32 public constant name = "BREIZH COIN";
+    bytes32 public constant symbol = "BZH";
     uint8  public constant decimals = 2;
     uint256 public totalSupply;
     address public manager;
+    mapping(address => bool) public freeTokenReceiver;
+    uint256 public constant freeTokens = 1000;
 
-    mapping(address => uint256)  balances;
+    mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowances;
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
@@ -114,6 +116,19 @@ contract BreizhCoin {
         // Balance of owner/manger deducted
         balances[msg.sender] -= reduction;
         return true;
+    }
+    
+    function getFreeToken() public {
+        // Check if user already got free tokens
+        require(!freeTokenReceiver[msg.sender]);
+        // Increase the balance of 1000 free tokens
+        balances[msg.sender] += freeTokens;
+        // Add user as free token receicer
+        freeTokenReceiver[msg.sender] = true;
+    }
+    
+    function destroyContract() public restricted {
+        selfdestruct(manager);
     }
 
     // Fallback function - Do not accept ethers
