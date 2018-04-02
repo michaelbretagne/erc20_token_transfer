@@ -12,10 +12,14 @@ const deploy = async () => {
 
   console.log("Attempting to deploy from account", accounts[0]);
 
+  // Deploy contract. Arguments(initSupply, maxSupply, freeTokensPerAddress)
   const result = await new web3.eth.Contract(
     JSON.parse(compiledContract.interface)
   )
-    .deploy({ data: compiledContract.bytecode, arguments: [1000000] })
+    .deploy({
+      data: compiledContract.bytecode,
+      arguments: [1000000, 2000000, 1000]
+    })
     .send({ gas: 1000000, from: accounts[0] });
 
   console.log("Contract deployed to", result.options.address);

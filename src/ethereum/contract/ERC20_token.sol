@@ -1,14 +1,14 @@
 pragma solidity ^0.4.21;
 
 contract BreizhCoin {
-
+    address public manager;
     bytes32 public constant name = "BREIZH COIN";
     bytes32 public constant symbol = "BZH";
     uint8  public constant decimals = 2;
     uint256 public totalSupply;
-    address public manager;
+    uint256 public maximumSupply;
+    uint256 public freeTokens;
     mapping(address => bool) public freeTokenReceiver;
-    uint256 public constant freeTokens = 1000;
 
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowances;
@@ -17,11 +17,15 @@ contract BreizhCoin {
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
 
-    function BreizhCoin(uint256 initSupply) public {
+    function BreizhCoin(uint256 initSupply, uint256 maxSupply, uint256 freeTokensPerAddress) public {
         // Set manager;
         manager = msg.sender;
         // Set the initial supply
         totalSupply = initSupply;
+        // Set maximum supply
+        maximumSupply = maxSupply;
+        // Set amount of free tokens giveaway per addresses
+        freeTokens = freeTokensPerAddress;
         // Set the sender as the owner/manager of all the initial set of tokens
         // Declare the balances mapping
         balances[msg.sender] = totalSupply;
@@ -30,7 +34,7 @@ contract BreizhCoin {
 
     // Manager/Owner requirement    
     modifier restricted() {
-        require(msg.sender == manager);
+        assert(msg.sender == manager);
         _;
     }
 
@@ -104,30 +108,38 @@ contract BreizhCoin {
 
     // Function that increase the total supply. Can only be called by manager/owner
     function increaseSupply(uint additional) public restricted returns (bool success) {
+        require(totalSupply + additional <= maximumSupply);
         // Owner/manager gets the ownership of additional coins
         balances[msg.sender] += additional;
+        totalSupply += additional;
         return true;
     }
 
     // Function that decrease the total supply. Can only be called by manager/owner
     function decreaseSupply(uint reduction) public restricted returns (bool success) {
-        // Check if manager/owner has more tokens than the reduction of tokens 
-        if (balances[msg.sender] < reduction) return false;
+        // Check if the total supply is higher than the reduction of tokens 
+        require(totalSupply >= reduction);
         // Balance of owner/manger deducted
         balances[msg.sender] -= reduction;
+        totalSupply -= reduction;
         return true;
     }
     
     function getFreeToken() public {
         // Check if user already got free tokens
-        require(!freeTokenReceiver[msg.sender]);
+        assert(!freeTokenReceiver[msg.sender]);
+        // Check if maximum supply bellow the total supply + free tokens
+        assert((totalSupply + freeTokens) <= maximumSupply);
         // Increase the balance of 1000 free tokens
         balances[msg.sender] += freeTokens;
+        // Add free tokens donated to total suplly
+        totalSupply += freeTokens;
         // Add user as free token receicer
         freeTokenReceiver[msg.sender] = true;
     }
     
     function destroyContract() public restricted {
+        // Contract suicide
         selfdestruct(manager);
     }
 
