@@ -12,6 +12,17 @@ class Transactions extends Component {
   };
 
   async componentWillMount() {
+    // Get current time
+    const currentTime = moment().format("MM-DD-YYYY HH:mm");
+    // Data if user is not connected to MetaMask or has no transaction history
+    const emptyData = [
+      {
+        txHash: "No transactions found",
+        link: "https://metamask.io/",
+        time: currentTime,
+        value: { amount: "0" }
+      }
+    ];
     // User accounts
     const accounts = await web3.eth.getAccounts();
     // Token contract address
@@ -75,9 +86,17 @@ class Transactions extends Component {
                 }
               ]
             });
+          } else {
+            this.setState({
+              data: emptyData
+            });
           }
         }
       }
+    } else {
+      this.setState({
+        data: emptyData
+      });
     }
   }
 

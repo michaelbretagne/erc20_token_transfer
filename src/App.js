@@ -28,7 +28,7 @@ class App extends Component {
       });
     }
     const balance = await ContractToken.methods.balanceOf(accounts[0]).call();
-    const formatedBalance = (balance / 1).toFixed(2);
+    const formatedBalance = (balance / 100).toFixed(2);
     const usd = Math.round(formatedBalance / 10000000).toFixed(2);
     this.setState({ account: accounts[0], balance: formatedBalance, usd });
   }
