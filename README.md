@@ -21,7 +21,7 @@ Decimals: **4**<br>
 Total supply: **10 million**<br>
 Maximun supply: **21 million**<br>
 
-**Wallet interface:** [Link here]([https://bzh-wallet.herokuapp.com/)<br>
+**Wallet interface:** [Link here](https://bzh-wallet.herokuapp.com/)<br>
 **EtherDelta exhange:** [Link here](https://etherdelta.com/#0x7e75a33124f3cb273d2d9dd5b42c1e20a03ebeb4-ETH)
 
 ## Token details on the Rinkeby test network
